@@ -10,11 +10,11 @@ let notesData = [];
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "../../../public")));
+app.use(express.static(path.join(__dirname, "./public")));
 
 app.get("/api/notes", function(err, res) {
     try {
-        notesData = fs.readFileSync("../../../db/db.json", "utf8");
+        notesData = fs.readFileSync("./db/db.json", "utf8");
         notesData = JSON.parse(notesData);
     } catch (err) {
         console.log("\n error (in app.get.catch):");
@@ -27,7 +27,7 @@ app.get("/api/notes", function(err, res) {
 //write the new note to the json file
 app.post("/api/notes", function(req, res) {
     try {
-        notesData = fs.readFileSync("../../../db/db.json", "utf8");
+        notesData = fs.readFileSync("./db/db.json", "utf8");
         console.log(notesData);
 
         //parse data to get array of objects
@@ -39,7 +39,7 @@ app.post("/api/notes", function(req, res) {
         //stringify so you can write it to file
         notesData = JSON.stringify(notesData);
         //writes new note to file
-        fs.writeFile("../../../db/db.json", notesData, "utf8", function(err) {
+        fs.writeFile("./db/db.json", notesData, "utf8", function(err) {
             if (err) throw err;
         });
         // revert back to array of objects & send back to browser
@@ -52,7 +52,7 @@ app.post("/api/notes", function(req, res) {
 
 app.delete("/api/notes/:id", function(req, res) {
     try {
-        notesData = fs.readFileSync("../../../db/db.json", "utf8");
+        notesData = fs.readFileSync("./db/db.json", "utf8");
 
         //parse data to get array of objects
         notesData = JSON.parse(notesData);
@@ -63,7 +63,7 @@ app.delete("/api/notes/:id", function(req, res) {
         //stringify so you can write it to file
         notesData = JSON.stringify(notesData);
         //writes new note to file
-        fs.writeFile("../../../db/db.json", notesData, "utf8", function(err) {
+        fs.writeFile("./db/db.json", notesData, "utf8", function(err) {
             if (err) throw err;
         });
         // revert back to array of objects & send back to browser
@@ -76,15 +76,15 @@ app.delete("/api/notes/:id", function(req, res) {
 
 // HTML GET REQUESTS
 app.get("/notes", function(req, res) {
-    res.sendFile(path.join(__dirname, "../../notes.html"))
+    res.sendFile(path.join(__dirname, "./public/notes.html"))
 });
 
 app.get("*", function(req, res) {
-    res.sendFile(path.join(__dirname, "../../index.html"))
+    res.sendFile(path.join(__dirname, "./public/index.html"))
 });
 
 app.get("/api/notes", function(req, res) {
-    return res.sendFile(path.json(__dirname, "../../../db/db.json"));
+    return res.sendFile(path.json(__dirname, "./db/db.json"));
 });
 
 
